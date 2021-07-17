@@ -13,6 +13,7 @@ public class View extends JFrame{
     private JPanel painelAutores;
     private JPanel painelEditoras;
     private JPanel painelGeneros;
+    private JPanel painelBusca;
     private JPanel painelDadosLivros;
     private JPanel painelAcoesLivros;
 
@@ -20,28 +21,38 @@ public class View extends JFrame{
     private JTextField autorTxtField;
     private JTextField editoraTxtField;
     private JTextField generoTxtField;
+    private JTextField nomeAutorTxtField;
+    private JTextField localNascAutorTxtField;
 
     private JFormattedTextField isbnFmtTxtField;
     private JFormattedTextField numPgFmtTxtField;
+    private JFormattedTextField dtNascAutorTxtField;
 
     private JButton btnCriar;
     private JButton btnDeletar;
     private JButton btnEditar;
 
+    private JButton btnCriarAutor;
+    private JButton btnDeletarAutor;
+    private JButton btnEditarAutor;
+
     private JTable tabelaLivros;
+    private JTable tabelaAutores;
 
     public View() throws ParseException {
         super("Manipulando o Banco de Dados");
         setLocation(400, 100);
         setSize(520, 500);
-        setResizable(false);
+//        setResizable(false);
 
         painelAbas = new JTabbedPane();
         painelLivros = new JPanel();
         painelAutores = new JPanel();
         painelEditoras = new JPanel();
         painelGeneros = new JPanel();
+        painelBusca = new JPanel();
 
+        painelAbas.add("Busca", painelBusca);
         painelAbas.add("Livros", painelLivros);
         painelAbas.add("Autores", painelAutores);
         painelAbas.add("Editoras", painelEditoras);
@@ -124,12 +135,70 @@ public class View extends JFrame{
 
         tabelaLivros = new JTable(dados, colunas);
         JScrollPane scrollPane = new JScrollPane(tabelaLivros);
-        scrollPane.setPreferredSize(new Dimension(480, 200));
+        scrollPane.setPreferredSize(new Dimension(480, 160));
         painelListaLivros.add(scrollPane);
 
         painelLivros.add(painelDadosLivros);
         painelLivros.add(painelAcoesLivros);
         painelLivros.add(painelListaLivros);
+
+        JPanel painelDadosAutores = new JPanel();
+        painelDadosAutores.setBorder(BorderFactory.createTitledBorder("Dados do Autor"));
+        painelDadosAutores.setLayout(new GridLayout(2, 1, 2, 2));
+        painelDadosAutores.setPreferredSize(new Dimension(500, 85));
+
+        JPanel painelNomeAutor = new JPanel();
+        painelNomeAutor.setLayout(new BorderLayout(5, 5));
+        painelNomeAutor.add(new JLabel("Nome: "), BorderLayout.WEST);
+        nomeAutorTxtField = new JTextField();
+        nomeAutorTxtField.setPreferredSize(new Dimension(400, 24));
+        painelNomeAutor.add(nomeAutorTxtField, BorderLayout.EAST);
+        painelDadosAutores.add(painelNomeAutor);
+
+        JPanel painelDtNascAutor = new JPanel();
+        MaskFormatter mascaraDtNasc = new MaskFormatter("##/##/####");
+        painelDtNascAutor.add(new JLabel("Data de Nascimento:"));
+        dtNascAutorTxtField = new JFormattedTextField(mascaraDtNasc);
+        dtNascAutorTxtField.setPreferredSize(new Dimension(70, 24));
+        painelDtNascAutor.add(dtNascAutorTxtField);
+
+        painelDtNascAutor.add(new JLabel("Local de Nascimento:"));
+        localNascAutorTxtField = new JTextField();
+        localNascAutorTxtField.setPreferredSize(new Dimension(160, 24));
+        painelDtNascAutor.add(localNascAutorTxtField);
+        painelDadosAutores.add(painelDtNascAutor);
+
+        JPanel painelAcoesAutores = new JPanel();
+        painelAcoesAutores.setLayout(new GridLayout(1, 3, 50, 0));
+        btnCriarAutor = new JButton("Criar");
+        painelAcoesAutores.add(btnCriarAutor);
+        btnDeletarAutor = new JButton("Deletar");
+        painelAcoesAutores.add(btnDeletarAutor);
+        btnEditarAutor = new JButton("Editar");
+        painelAcoesAutores.add(btnEditarAutor);
+
+        JPanel painelListaAutores = new JPanel();
+        painelListaAutores.setBorder(BorderFactory.createTitledBorder("Lista de Autores"));
+        painelListaAutores.setPreferredSize(new Dimension(500, 300));
+
+        String [] colunasAutores = {"Código", "Nome", "Data de Nascimento", "Local de Nascimento"};
+        Object [][] dadosAutores = {
+                {"Código", "Nome", "Data de Nascimento", "Local de Nascimento"},
+                {"Código", "Nome", "Data de Nascimento", "Local de Nascimento"},
+                {"Código", "Nome", "Data de Nascimento", "Local de Nascimento"},
+                {"Código", "Nome", "Data de Nascimento", "Local de Nascimento"},
+                {"Código", "Nome", "Data de Nascimento", "Local de Nascimento"},
+        };
+
+        tabelaAutores = new JTable(dadosAutores, colunasAutores);
+        JScrollPane scrollPaneAut = new JScrollPane(tabelaAutores);
+        scrollPaneAut.setPreferredSize(new Dimension(480, 250));
+        painelListaAutores.add(scrollPaneAut);
+
+        painelAutores.add(painelDadosAutores);
+        painelAutores.add(painelAcoesAutores);
+        painelAutores.add(painelListaAutores);
+
         add(painelAbas);
 
     }
