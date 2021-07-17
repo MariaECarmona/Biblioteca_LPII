@@ -1,23 +1,28 @@
 package com.view;
 
-import com.table.*;
 import com.dao.LivroDAO;
 import javax.swing.*;
 import javax.swing.text.MaskFormatter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.text.ParseException;
 import com.dao.*;
+import com.table.AutorTableModel;
+import com.table.EditoraTableModel;
+import com.table.GeneroTableModel;
+import com.table.LivroTableModel;
 
-public class View extends JFrame implements ActionListener{
+public class View extends JFrame{
     private JTabbedPane painelAbas;
 
     private JPanel painelLivros;
     private JPanel painelAutores;
     private JPanel painelEditoras;
     private JPanel painelGeneros;
-    private JPanel painelBusca;
+//    private JPanel painelBusca;
 
     private JTextField tituloTxtField;
     private JTextField autorTxtField;
@@ -56,20 +61,25 @@ public class View extends JFrame implements ActionListener{
     private JTable tabelaGeneros;
     private JTable tabelaResultados;
 
+    private Eventos evt;
+    private MouseAdapterTable evtTable;
+
     public View() throws ParseException {
         super("Manipulando o Banco de Dados");
         setLocation(400, 100);
         setSize(520, 500);
         setResizable(false);
 
+        evt = new Eventos();
+
         painelAbas = new JTabbedPane();
         painelLivros = new JPanel();
         painelAutores = new JPanel();
         painelEditoras = new JPanel();
         painelGeneros = new JPanel();
-        painelBusca = new JPanel();
+//        painelBusca = new JPanel();
 
-        painelAbas.add("Busca", painelBusca);
+//        painelAbas.add("Busca", painelBusca);
         painelAbas.add("Livros", painelLivros);
         painelAbas.add("Autores", painelAutores);
         painelAbas.add("Editoras", painelEditoras);
@@ -143,6 +153,7 @@ public class View extends JFrame implements ActionListener{
 
         tabelaLivros = new JTable();
         tabelaLivros.setModel(new LivroTableModel(new LivroDAO().listarTodosFormatado()));
+        tabelaLivros.addMouseListener(evtTable);
         JScrollPane scrollPane = new JScrollPane(tabelaLivros);
         scrollPane.setPreferredSize(new Dimension(480, 160));
         painelListaLivros.add(scrollPane);
@@ -268,59 +279,71 @@ public class View extends JFrame implements ActionListener{
         painelGeneros.add(painelListaGeneros);
 
         //ABA BUSCAS
-        JPanel busca = new JPanel();
-        buscaTxtField = new JTextField();
-        buscaTxtField.setPreferredSize(new Dimension(370, 24));
-        busca.add(buscaTxtField);
-        btnBuscar = new JButton("Buscar");
-        busca.add(btnBuscar);
-
-        JPanel painelBuscaPor = new JPanel();
-        painelBuscaPor.setBorder(BorderFactory.createTitledBorder("Buscar livro por"));
-        painelBuscaPor.setPreferredSize(new Dimension(500, 55));
-        painelBuscaPor.setLayout(new GridLayout(1, 3, 40, 0));
-
-        grupoBusca = new ButtonGroup();
-        rbtnAutor = new JRadioButton("Autor");
-        grupoBusca.add(rbtnAutor);
-        painelBuscaPor.add(rbtnAutor);
-        rbtnEditora = new JRadioButton("Editora");
-        grupoBusca.add(rbtnEditora);
-        painelBuscaPor.add(rbtnEditora);
-        rbtnGenero = new JRadioButton("Gênero");
-        grupoBusca.add(rbtnGenero);
-        painelBuscaPor.add(rbtnGenero);
-
-        JPanel painelResultados = new JPanel();
-        painelResultados.setBorder(BorderFactory.createTitledBorder("Resultados"));
-        painelResultados.setPreferredSize(new Dimension(500, 330));
-
-        String[] colunasResults = {"", "Código", "Nome", "Data de Nascimento", "Local de Nascimento"};
-        Object[][] dadosResults = {
-                {"", "Código", "Nome", "Data de Nascimento", "Local de Nascimento"},
-                {"", "Código", "Nome", "Data de Nascimento", "Local de Nascimento"},
-                {"", "Código", "Nome", "Data de Nascimento", "Local de Nascimento"},
-                {"", "Código", "Nome", "Data de Nascimento", "Local de Nascimento"},
-                {"", "Código", "Nome", "Data de Nascimento", "Local de Nascimento"},
-        };
-
-        tabelaResultados = new JTable(dadosResults, colunasResults);
-        JScrollPane scrollPaneResults = new JScrollPane(tabelaResultados);
-        scrollPaneResults.setPreferredSize(new Dimension(480, 280));
-        painelResultados.add(scrollPaneResults);
-
-        painelBusca.add(busca);
-        painelBusca.add(painelBuscaPor);
-        painelBusca.add(painelResultados);
+//        JPanel busca = new JPanel();
+//        buscaTxtField = new JTextField();
+//        buscaTxtField.setPreferredSize(new Dimension(370, 24));
+//        busca.add(buscaTxtField);
+//        btnBuscar = new JButton("Buscar");
+//        busca.add(btnBuscar);
+//
+//        JPanel painelBuscaPor = new JPanel();
+//        painelBuscaPor.setBorder(BorderFactory.createTitledBorder("Buscar livro por"));
+//        painelBuscaPor.setPreferredSize(new Dimension(500, 55));
+//        painelBuscaPor.setLayout(new GridLayout(1, 3, 40, 0));
+//
+//        grupoBusca = new ButtonGroup();
+//        rbtnAutor = new JRadioButton("Autor");
+//        grupoBusca.add(rbtnAutor);
+//        painelBuscaPor.add(rbtnAutor);
+//        rbtnEditora = new JRadioButton("Editora");
+//        grupoBusca.add(rbtnEditora);
+//        painelBuscaPor.add(rbtnEditora);
+//        rbtnGenero = new JRadioButton("Gênero");
+//        grupoBusca.add(rbtnGenero);
+//        painelBuscaPor.add(rbtnGenero);
+//
+//        JPanel painelResultados = new JPanel();
+//        painelResultados.setBorder(BorderFactory.createTitledBorder("Resultados"));
+//        painelResultados.setPreferredSize(new Dimension(500, 330));
+//
+//        String[] colunasResults = {"", "Código", "Nome", "Data de Nascimento", "Local de Nascimento"};
+//        Object[][] dadosResults = {
+//                {"", "Código", "Nome", "Data de Nascimento", "Local de Nascimento"},
+//                {"", "Código", "Nome", "Data de Nascimento", "Local de Nascimento"},
+//                {"", "Código", "Nome", "Data de Nascimento", "Local de Nascimento"},
+//                {"", "Código", "Nome", "Data de Nascimento", "Local de Nascimento"},
+//                {"", "Código", "Nome", "Data de Nascimento", "Local de Nascimento"},
+//        };
+//
+//        tabelaResultados = new JTable(dadosResults, colunasResults);
+//        JScrollPane scrollPaneResults = new JScrollPane(tabelaResultados);
+//        scrollPaneResults.setPreferredSize(new Dimension(480, 280));
+//        painelResultados.add(scrollPaneResults);
+//
+//        painelBusca.add(busca);
+//        painelBusca.add(painelBuscaPor);
+//        painelBusca.add(painelResultados);
 
         add(painelAbas);
     }
 
-    @Override
-    public void actionPerformed(ActionEvent actionEvent) {
-//        private void tabelaClicked(java.awt.event.MouseEvent evt){
-//
-//        }
+    private class Eventos  implements ActionListener{
+
+
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+
+        }
     }
+
+    private class MouseAdapterTable extends MouseAdapter {
+        @Override
+        public void mouseClicked(java.awt.event.MouseEvent evt){
+//            int row = .rowAtPoint(evt.getPoint());
+//            int col = jTable1.columnAtPoint(evt.getPoint());
+
+        }
+    }
+
 }
 
