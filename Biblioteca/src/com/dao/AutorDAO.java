@@ -31,7 +31,7 @@ public class AutorDAO {
             stmt.execute();
             stmt.close();
         }catch(Exception erro){
-            throw new RuntimeException("Erro 2: " + erro);
+            throw new RuntimeException("Erro ao inserir Autor: " + erro);
         }
     }
 
@@ -48,7 +48,7 @@ public class AutorDAO {
             stmt.execute();
             stmt.close();
         }catch(Exception erro){
-            throw new RuntimeException("Erro 3: " + erro);
+            throw new RuntimeException("Erro ao alterar Autor: " + erro);
         }
     }
 
@@ -60,7 +60,7 @@ public class AutorDAO {
             st.execute(sql);
             st.close();
         }catch(Exception erro){
-            throw new RuntimeException("Erro 4: " + erro);
+            throw new RuntimeException("Erro ao excluir Autor: " + erro);
         }
     }
 
@@ -82,14 +82,14 @@ public class AutorDAO {
           st.close();
           rs.close();
         }catch(Exception erro){
-            throw new RuntimeException("Erro 5: " + erro);
+            throw new RuntimeException("Erro ao listar todos os Autores: " + erro);
         }
 
         return lista;
     }
 
-    public Autor buscarPorCodigo(int isbn) {
-        String sql = "SELECT " + isbn + " FROM autor";
+    public Autor buscarPorCodigo(int codigo) {
+        String sql = "SELECT " + codigo + " FROM autor";
         Autor autor = new Autor();
 
         try{
@@ -107,7 +107,7 @@ public class AutorDAO {
             st.close();
             rs.close();
         }catch(Exception erro){
-            throw new RuntimeException("Erro 6: " + erro);
+            throw new RuntimeException("Erro ao buscar Autor por código: " + erro);
         }
 
         return autor;

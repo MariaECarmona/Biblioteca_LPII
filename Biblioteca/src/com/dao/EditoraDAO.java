@@ -29,7 +29,7 @@ public class EditoraDAO {
             stmt.execute();
             stmt.close();
         }catch(Exception erro){
-            throw new RuntimeException("Erro 2: " + erro);
+            throw new RuntimeException("Erro ao inserir Editora: " + erro);
         }
     }
 
@@ -44,7 +44,7 @@ public class EditoraDAO {
             stmt.execute();
             stmt.close();
         }catch(Exception erro){
-            throw new RuntimeException("Erro 3: " + erro);
+            throw new RuntimeException("Erro ao alterar Editora: " + erro);
         }
     }
 
@@ -56,7 +56,7 @@ public class EditoraDAO {
             st.execute(sql);
             st.close();
         }catch(Exception erro){
-            throw new RuntimeException("Erro 4: " + erro);
+            throw new RuntimeException("Erro ao excluir Editora: " + erro);
         }
     }
 
@@ -77,7 +77,7 @@ public class EditoraDAO {
             st.close();
             rs.close();
         }catch(Exception erro){
-            throw new RuntimeException("Erro 5: " + erro);
+            throw new RuntimeException("Erro ao listar todas as Editoras: " + erro);
         }
 
         return lista;
@@ -100,7 +100,7 @@ public class EditoraDAO {
             st.close();
             rs.close();
         }catch(Exception erro){
-            throw new RuntimeException("Erro 6: " + erro);
+            throw new RuntimeException("Erro ao buscar Editora por código: " + erro);
         }
 
         return editora;

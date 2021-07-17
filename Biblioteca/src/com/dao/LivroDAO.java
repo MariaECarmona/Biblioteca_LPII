@@ -33,7 +33,7 @@ public class LivroDAO {
             stmt.execute();
             stmt.close();
         }catch(Exception erro){
-            throw new RuntimeException("Erro 2: " + erro);
+            throw new RuntimeException("Erro ao inserir Livro: " + erro);
         }
     }
 
@@ -53,7 +53,7 @@ public class LivroDAO {
             stmt.execute();
             stmt.close();
         }catch(Exception erro){
-            throw new RuntimeException("Erro 3: " + erro);
+            throw new RuntimeException("Erro ao alterar Livro: " + erro);
         }
     }
 
@@ -65,7 +65,7 @@ public class LivroDAO {
             st.execute(sql);
             st.close();
         }catch(Exception erro){
-            throw new RuntimeException("Erro 4: " + erro);
+            throw new RuntimeException("Erro ao excluir Livro: " + erro);
         }
     }
 
@@ -96,7 +96,7 @@ public class LivroDAO {
             st.close();
             rs.close();
         }catch(Exception erro){
-            throw new RuntimeException("Erro 5: " + erro);
+            throw new RuntimeException("Erro ao listar todos os Livros: " + erro);
         }
 
         return lista;
@@ -135,7 +135,7 @@ public class LivroDAO {
             st.close();
             rs.close();
         }catch(Exception erro){
-            throw new RuntimeException("Erro 5: " + erro);
+            throw new RuntimeException("Erro ao listar todos os livros formatados: " + erro);
         }
 
         return lista;
