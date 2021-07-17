@@ -24,6 +24,8 @@ public class View extends JFrame{
     private JTextField localNascAutorTxtField;
     private JTextField nomeEditoraTxtField;
     private JTextField nomeGeneroTxtField;
+    private JTextField buscaTxtField;
+
 
     private JFormattedTextField isbnFmtTxtField;
     private JFormattedTextField numPgFmtTxtField;
@@ -41,12 +43,16 @@ public class View extends JFrame{
     private JButton btnCriarGenero;
     private JButton btnDeletarGenero;
     private JButton btnEditarGenero;
+    private JButton btnBuscar;
+
+    private ButtonGroup grupoBusca;
+    private JRadioButton rbtnAutor, rbtnGenero, rbtnEditora;
 
     private JTable tabelaLivros;
     private JTable tabelaAutores;
     private JTable tabelaEditoras;
     private JTable tabelaGeneros;
-
+    private JTable tabelaResultados;
 
     public View() throws ParseException {
         super("Manipulando o Banco de Dados");
@@ -292,8 +298,51 @@ public class View extends JFrame{
         painelGeneros.add(painelAcoesGeneros);
         painelGeneros.add(painelListaGeneros);
 
+        //ABA BUSCA
+        JPanel busca = new JPanel();
+        buscaTxtField = new JTextField();
+        buscaTxtField.setPreferredSize(new Dimension(370, 24));
+        busca.add(buscaTxtField);
+        btnBuscar = new JButton("Buscar");
+        busca.add(btnBuscar);
 
+        JPanel painelBuscaPor = new JPanel();
+        painelBuscaPor.setBorder(BorderFactory.createTitledBorder("Buscar livro por"));
+        painelBuscaPor.setPreferredSize(new Dimension(500, 55));
+        painelBuscaPor.setLayout(new GridLayout(1, 3, 40, 0));
 
+        grupoBusca = new ButtonGroup();
+        rbtnAutor = new JRadioButton("Autor");
+        grupoBusca.add(rbtnAutor);
+        painelBuscaPor.add(rbtnAutor);
+        rbtnEditora = new JRadioButton("Editora");
+        grupoBusca.add(rbtnEditora);
+        painelBuscaPor.add(rbtnEditora);
+        rbtnGenero = new JRadioButton("Gênero");
+        grupoBusca.add(rbtnGenero);
+        painelBuscaPor.add(rbtnGenero);
+
+        JPanel painelResultados = new JPanel();
+        painelResultados.setBorder(BorderFactory.createTitledBorder("Resultados"));
+        painelResultados.setPreferredSize(new Dimension(500, 330));
+
+        String [] colunasResults = {"", "Código", "Nome", "Data de Nascimento", "Local de Nascimento"};
+        Object [][] dadosResults = {
+                {"", "Código", "Nome", "Data de Nascimento", "Local de Nascimento"},
+                {"", "Código", "Nome", "Data de Nascimento", "Local de Nascimento"},
+                {"","Código", "Nome", "Data de Nascimento", "Local de Nascimento"},
+                {"", "Código", "Nome", "Data de Nascimento", "Local de Nascimento"},
+                {"", "Código", "Nome", "Data de Nascimento", "Local de Nascimento"},
+        };
+
+        tabelaResultados = new JTable(dadosResults, colunasResults);
+        JScrollPane scrollPaneResults = new JScrollPane(tabelaResultados);
+        scrollPaneResults.setPreferredSize(new Dimension(480, 280));
+        painelResultados.add(scrollPaneResults);
+
+        painelBusca.add(busca);
+        painelBusca.add(painelBuscaPor);
+        painelBusca.add(painelResultados);
 
         add(painelAbas);
 
