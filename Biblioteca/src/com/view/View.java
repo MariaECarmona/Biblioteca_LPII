@@ -3,7 +3,6 @@ package com.view;
 import javax.swing.*;
 import javax.swing.text.MaskFormatter;
 import java.awt.*;
-import java.text.NumberFormat;
 import java.text.ParseException;
 
 public class View extends JFrame{
@@ -23,6 +22,8 @@ public class View extends JFrame{
     private JTextField generoTxtField;
     private JTextField nomeAutorTxtField;
     private JTextField localNascAutorTxtField;
+    private JTextField nomeEditoraTxtField;
+
 
     private JFormattedTextField isbnFmtTxtField;
     private JFormattedTextField numPgFmtTxtField;
@@ -31,13 +32,17 @@ public class View extends JFrame{
     private JButton btnCriar;
     private JButton btnDeletar;
     private JButton btnEditar;
-
     private JButton btnCriarAutor;
     private JButton btnDeletarAutor;
     private JButton btnEditarAutor;
+    private JButton btnCriarEditora;
+    private JButton btnDeletarEditora;
+    private JButton btnEditarEditora;
 
     private JTable tabelaLivros;
     private JTable tabelaAutores;
+    private JTable tabelaEditoras;
+
 
     public View() throws ParseException {
         super("Manipulando o Banco de Dados");
@@ -58,6 +63,7 @@ public class View extends JFrame{
         painelAbas.add("Editoras", painelEditoras);
         painelAbas.add("Gêneros", painelGeneros);
 
+        //ABA LIVROS
         painelDadosLivros = new JPanel();
         painelDadosLivros.setBorder(BorderFactory.createTitledBorder("Dados do Livro"));
         painelDadosLivros.setLayout(new GridLayout(5, 1, 2, 2));
@@ -142,6 +148,7 @@ public class View extends JFrame{
         painelLivros.add(painelAcoesLivros);
         painelLivros.add(painelListaLivros);
 
+        //ABA AUTORES
         JPanel painelDadosAutores = new JPanel();
         painelDadosAutores.setBorder(BorderFactory.createTitledBorder("Dados do Autor"));
         painelDadosAutores.setLayout(new GridLayout(2, 1, 2, 2));
@@ -198,6 +205,49 @@ public class View extends JFrame{
         painelAutores.add(painelDadosAutores);
         painelAutores.add(painelAcoesAutores);
         painelAutores.add(painelListaAutores);
+
+        //ABA EDITORAS
+        JPanel painelDadosEditoras = new JPanel();
+        painelDadosEditoras.setBorder(BorderFactory.createTitledBorder("Dados da Editora"));
+        painelDadosEditoras.setPreferredSize(new Dimension(500, 55));
+
+        painelDadosEditoras.add(new JLabel("Nome: "));
+        nomeEditoraTxtField = new JTextField();
+        nomeEditoraTxtField.setPreferredSize(new Dimension(430, 24));
+        painelDadosEditoras.add(nomeEditoraTxtField);
+
+        JPanel painelAcoesEditoras = new JPanel();
+        painelAcoesEditoras.setLayout(new GridLayout(1, 3, 50, 0));
+        btnCriarEditora = new JButton("Criar");
+        painelAcoesEditoras.add(btnCriarEditora);
+        btnDeletarEditora = new JButton("Deletar");
+        painelAcoesEditoras.add(btnDeletarEditora);
+        btnEditarEditora = new JButton("Editar");
+        painelAcoesEditoras.add(btnEditarEditora);
+
+        JPanel painelListaEditoras = new JPanel();
+        painelListaEditoras.setBorder(BorderFactory.createTitledBorder("Lista de Autores"));
+        painelListaEditoras.setPreferredSize(new Dimension(500, 350));
+
+        String [] colunasEditoras = {"Código", "Editora"};
+        Object [][] dadosEditoras = {
+                {"Código", "Editora"},
+                {"Código", "Editora"},
+                {"Código", "Editora"},
+                {"Código", "Editora"},
+                {"Código", "Editora"},
+        };
+
+        tabelaEditoras = new JTable(dadosEditoras, colunasEditoras);
+        JScrollPane scrollPaneEdi = new JScrollPane(tabelaEditoras);
+        scrollPaneEdi.setPreferredSize(new Dimension(480, 250));
+        painelListaEditoras.add(scrollPaneEdi);
+
+        painelEditoras.add(painelDadosEditoras);
+        painelEditoras.add(painelAcoesEditoras);
+        painelEditoras.add(painelListaEditoras);
+
+
 
         add(painelAbas);
 
