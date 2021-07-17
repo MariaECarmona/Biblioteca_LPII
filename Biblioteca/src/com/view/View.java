@@ -24,14 +24,17 @@ public class View extends JFrame{
     private JFormattedTextField isbnFmtTxtField;
     private JFormattedTextField numPgFmtTxtField;
 
+    private JButton btnCriar;
+    private JButton btnDeletar;
+    private JButton btnEditar;
 
-
+    private JTable tabelaLivros;
 
     public View() throws ParseException {
         super("Manipulando o Banco de Dados");
         setLocation(400, 100);
-        setSize(500, 600);
-//        setResizable(false);
+        setSize(520, 500);
+        setResizable(false);
 
         painelAbas = new JTabbedPane();
         painelLivros = new JPanel();
@@ -47,6 +50,7 @@ public class View extends JFrame{
         painelDadosLivros = new JPanel();
         painelDadosLivros.setBorder(BorderFactory.createTitledBorder("Dados do Livro"));
         painelDadosLivros.setLayout(new GridLayout(5, 1, 2, 2));
+        painelDadosLivros.setPreferredSize(new Dimension(500, 180));
         painelLivros.add(painelDadosLivros);
 
         JPanel painelTituloLivro = new JPanel();
@@ -95,13 +99,38 @@ public class View extends JFrame{
         painelIsbnLivro.add(numPgFmtTxtField);
         painelDadosLivros.add(painelIsbnLivro);
 
-        painelLivros.add(painelDadosLivros);
-        add(painelAbas);
-
         painelAcoesLivros = new JPanel();
-        painelAcoesLivros.setLayout(new GridLayout(1, 3, 3, 3));
-        painelLivros.add(painelAcoesLivros);
+        painelAcoesLivros.setLayout(new GridLayout(1, 3, 50, 0));
+        btnCriar = new JButton("Criar");
+        painelAcoesLivros.add(btnCriar);
+        btnDeletar = new JButton("Deletar");
+        painelAcoesLivros.add(btnDeletar);
+        btnEditar = new JButton("Editar");
+        painelAcoesLivros.add(btnEditar);
 
+        JPanel painelListaLivros = new JPanel();
+        painelListaLivros.setBorder(BorderFactory.createTitledBorder("Lista de Livros"));
+        painelListaLivros.setPreferredSize(new Dimension(500, 300));
+
+        String [] colunas = {"", "ISBN", "Título", "Autor", "Editora", "Gênero", "Nº Páginas"};
+        Object [][] dados = {
+                {"", "ISBN", "Título", "Autor", "Editora", "Gênero", "Nº Páginas"},
+                {"", "ISBN", "Título", "Autor", "Editora", "Gênero", "Nº Páginas"},
+                {"", "ISBN", "Título", "Autor", "Editora", "Gênero", "Nº Páginas"},
+                {"", "ISBN", "Título", "Autor", "Editora", "Gênero", "Nº Páginas"},
+                {"", "ISBN", "Título", "Autor", "Editora", "Gênero", "Nº Páginas"},
+                {"", "ISBN", "Título", "Autor", "Editora", "Gênero", "Nº Páginas"},
+        };
+
+        tabelaLivros = new JTable(dados, colunas);
+        JScrollPane scrollPane = new JScrollPane(tabelaLivros);
+        scrollPane.setPreferredSize(new Dimension(480, 200));
+        painelListaLivros.add(scrollPane);
+
+        painelLivros.add(painelDadosLivros);
+        painelLivros.add(painelAcoesLivros);
+        painelLivros.add(painelListaLivros);
+        add(painelAbas);
 
     }
 }
