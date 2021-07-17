@@ -5,7 +5,7 @@ import com.model.Livro;
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 
-public class EditoraTableModel extends AbstractTableModel {
+public class LivroTableModel extends AbstractTableModel {
     public static final int COL_ISBN = 0;
     public static final int COL_NOME = 1;
     public static final int COL_AUTOR = 2;
@@ -15,7 +15,7 @@ public class EditoraTableModel extends AbstractTableModel {
 
     public ArrayList<Livro> lista;
 
-    public EditoraTableModel(ArrayList<Livro> l) {
+    public LivroTableModel(ArrayList<Livro> l) {
         lista = new ArrayList<Livro>(l);
     }
 
