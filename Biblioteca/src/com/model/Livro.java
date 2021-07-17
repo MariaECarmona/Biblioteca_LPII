@@ -2,7 +2,7 @@ package com.model;
 
 public class Livro {
     private String isbn, nome;
-    private int numPaginas, autor, editora;
+    private int numPaginas, autor, editora, genero;
 
     public String getIsbn() {
         return isbn;
@@ -43,4 +43,13 @@ public class Livro {
     public void setEditora(int editora) {
         this.editora = editora;
     }
+
+    public int getGenero() {
+        return genero;
+    }
+
+    public void setGenero(int genero) {
+        this.genero = genero;
+    }
+
 }
