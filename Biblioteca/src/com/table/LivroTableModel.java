@@ -6,12 +6,13 @@ import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 
 public class LivroTableModel extends AbstractTableModel {
-    public static final int COL_ISBN = 0;
-    public static final int COL_NOME = 1;
-    public static final int COL_AUTOR = 2;
-    public static final int COL_EDITORA = 3;
-    public static final int COL_GENERO = 4;
-    public static final int COL_NUM_PAGINAS = 5;
+    public static final int COL_NUMERO = 0;
+    public static final int COL_ISBN = 1;
+    public static final int COL_NOME = 2;
+    public static final int COL_AUTOR = 3;
+    public static final int COL_EDITORA = 4;
+    public static final int COL_GENERO = 5;
+    public static final int COL_NUM_PAGINAS = 6;
 
     public ArrayList<Livro> lista;
 
@@ -26,12 +27,13 @@ public class LivroTableModel extends AbstractTableModel {
 
     @Override
     public int getColumnCount() {
-        return 6;
+        return 7;
     }
 
     @Override
     public Object getValueAt(int linha, int coluna) {
         Livro livro = lista.get(linha);
+        if(coluna == COL_NUMERO) return linha;
         if(coluna == COL_ISBN) return livro.getIsbn();
         if(coluna == COL_NOME) return livro.getNome();
         if(coluna == COL_AUTOR) return livro.getNomeAutor();
@@ -43,6 +45,7 @@ public class LivroTableModel extends AbstractTableModel {
 
     @Override
     public String getColumnName(int coluna) {
+        if(coluna == COL_NUMERO) return "";
         if(coluna == COL_ISBN) return "ISBN";
         if(coluna == COL_NOME) return "Nome";
         if(coluna == COL_AUTOR) return "Autor";
