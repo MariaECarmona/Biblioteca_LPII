@@ -298,7 +298,7 @@ public class View extends JFrame{
         painelGeneros.add(painelAcoesGeneros);
         painelGeneros.add(painelListaGeneros);
 
-        //ABA BUSCA
+        //ABA BUSCAS
         JPanel busca = new JPanel();
         buscaTxtField = new JTextField();
         buscaTxtField.setPreferredSize(new Dimension(370, 24));
