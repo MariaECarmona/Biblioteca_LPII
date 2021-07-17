@@ -84,7 +84,7 @@ public class EditoraDAO {
     }
 
     public Editora buscarPorCodigo(int codigo) {
-        String sql = "SELECT " + codigo + " FROM editora";
+        String sql = "SELECT * FROM editora WHERE Codigo = " + codigo;
         Editora editora = new Editora();
 
         try{

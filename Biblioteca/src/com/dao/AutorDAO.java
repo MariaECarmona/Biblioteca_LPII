@@ -89,7 +89,7 @@ public class AutorDAO {
     }
 
     public Autor buscarPorCodigo(int codigo) {
-        String sql = "SELECT " + codigo + " FROM autor";
+        String sql = "SELECT * FROM autor WHERE Codigo = " + codigo;
         Autor autor = new Autor();
 
         try{

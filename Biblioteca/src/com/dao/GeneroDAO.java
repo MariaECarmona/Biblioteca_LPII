@@ -81,7 +81,7 @@ public class GeneroDAO {
     }
 
     public Genero buscarPorNome(String nome) {
-        String sql = "SELECT " + nome + " FROM genero";
+        String sql = "SELECT * FROM genero WHERE Nome = " + nome;
         Genero genero = new Genero();
 
         try{
