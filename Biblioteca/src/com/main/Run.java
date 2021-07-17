@@ -1,5 +1,5 @@
- package com.main;
-import javafx.application.Application;
+package com.main;
+
 import com.view.*;
 
  public class Run{
