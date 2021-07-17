@@ -9,4 +9,4 @@
 # Esse arquivo armazena o JDK do projeto; O Gabriel não tem o JDK 1.8 então
 # vamos ignorar esse arquivo para ele poder mudar o JDK do projeto sem
 # estragar nada
-/misc.xml
+.idea/misc.xml
