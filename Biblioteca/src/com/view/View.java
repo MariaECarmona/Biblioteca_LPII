@@ -3,9 +3,11 @@ package com.view;
 import javax.swing.*;
 import javax.swing.text.MaskFormatter;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.ParseException;
 
-public class View extends JFrame{
+public class View extends JFrame implements ActionListener{
     private JTabbedPane painelAbas;
 
     private JPanel painelLivros;
@@ -139,8 +141,8 @@ public class View extends JFrame{
         painelListaLivros.setBorder(BorderFactory.createTitledBorder("Lista de Livros"));
         painelListaLivros.setPreferredSize(new Dimension(500, 200));
 
-        String [] colunas = {"", "ISBN", "Título", "Autor", "Editora", "Gênero", "Nº Páginas"};
-        Object [][] dados = {
+        String[] colunas = {"", "ISBN", "Título", "Autor", "Editora", "Gênero", "Nº Páginas"};
+        Object[][] dados = {
                 {"", "ISBN", "Título", "Autor", "Editora", "Gênero", "Nº Páginas"},
                 {"", "ISBN", "Título", "Autor", "Editora", "Gênero", "Nº Páginas"},
                 {"", "ISBN", "Título", "Autor", "Editora", "Gênero", "Nº Páginas"},
@@ -198,11 +200,11 @@ public class View extends JFrame{
         painelListaAutores.setBorder(BorderFactory.createTitledBorder("Lista de Autores"));
         painelListaAutores.setPreferredSize(new Dimension(500, 300));
 
-        String [] colunasAutores = {"", "Código", "Nome", "Data de Nascimento", "Local de Nascimento"};
-        Object [][] dadosAutores = {
+        String[] colunasAutores = {"", "Código", "Nome", "Data de Nascimento", "Local de Nascimento"};
+        Object[][] dadosAutores = {
                 {"", "Código", "Nome", "Data de Nascimento", "Local de Nascimento"},
                 {"", "Código", "Nome", "Data de Nascimento", "Local de Nascimento"},
-                {"","Código", "Nome", "Data de Nascimento", "Local de Nascimento"},
+                {"", "Código", "Nome", "Data de Nascimento", "Local de Nascimento"},
                 {"", "Código", "Nome", "Data de Nascimento", "Local de Nascimento"},
                 {"", "Código", "Nome", "Data de Nascimento", "Local de Nascimento"},
         };
@@ -239,8 +241,8 @@ public class View extends JFrame{
         painelListaEditoras.setBorder(BorderFactory.createTitledBorder("Lista de Autores"));
         painelListaEditoras.setPreferredSize(new Dimension(500, 330));
 
-        String [] colunasEditoras = {"", "Código", "Editora"};
-        Object [][] dadosEditoras = {
+        String[] colunasEditoras = {"", "Código", "Editora"};
+        Object[][] dadosEditoras = {
                 {"", "Código", "Editora"},
                 {"", "Código", "Editora"},
                 {"", "Código", "Editora"},
@@ -280,8 +282,8 @@ public class View extends JFrame{
         painelListaGeneros.setBorder(BorderFactory.createTitledBorder("Lista de Gêneros"));
         painelListaGeneros.setPreferredSize(new Dimension(500, 330));
 
-        String [] colunasGeneros = {"", "Código", "Gênero"};
-        Object [][] dadosGeneros = {
+        String[] colunasGeneros = {"", "Código", "Gênero"};
+        Object[][] dadosGeneros = {
                 {"", "Código", "Editora"},
                 {"", "Código", "Gênero"},
                 {"", "Código", "Gênero"},
@@ -326,11 +328,11 @@ public class View extends JFrame{
         painelResultados.setBorder(BorderFactory.createTitledBorder("Resultados"));
         painelResultados.setPreferredSize(new Dimension(500, 330));
 
-        String [] colunasResults = {"", "Código", "Nome", "Data de Nascimento", "Local de Nascimento"};
-        Object [][] dadosResults = {
+        String[] colunasResults = {"", "Código", "Nome", "Data de Nascimento", "Local de Nascimento"};
+        Object[][] dadosResults = {
                 {"", "Código", "Nome", "Data de Nascimento", "Local de Nascimento"},
                 {"", "Código", "Nome", "Data de Nascimento", "Local de Nascimento"},
-                {"","Código", "Nome", "Data de Nascimento", "Local de Nascimento"},
+                {"", "Código", "Nome", "Data de Nascimento", "Local de Nascimento"},
                 {"", "Código", "Nome", "Data de Nascimento", "Local de Nascimento"},
                 {"", "Código", "Nome", "Data de Nascimento", "Local de Nascimento"},
         };
@@ -345,6 +347,12 @@ public class View extends JFrame{
         painelBusca.add(painelResultados);
 
         add(painelAbas);
-
     }
+
+    @Override
+    public void actionPerformed(ActionEvent actionEvent) {
+        
+    }
+}
+
 }
