@@ -60,7 +60,7 @@ public class View extends JFrame implements ActionListener{
         super("Manipulando o Banco de Dados");
         setLocation(400, 100);
         setSize(520, 500);
-//        setResizable(false);
+        setResizable(false);
 
         painelAbas = new JTabbedPane();
         painelLivros = new JPanel();
@@ -351,8 +351,7 @@ public class View extends JFrame implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-        
+
     }
 }
 
-}
