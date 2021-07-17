@@ -1,16 +1,13 @@
 package com.view;
 
+import com.table.*;
 import com.dao.LivroDAO;
-import com.table.LivroTableModel;
-
 import javax.swing.*;
 import javax.swing.text.MaskFormatter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
 import java.text.ParseException;
-import com.table.*;
 import com.dao.*;
 
 public class View extends JFrame implements ActionListener{
@@ -321,9 +318,9 @@ public class View extends JFrame implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-        private void tabelaClicked(java.awt.event.MouseEvent evt){
-
-        }
+//        private void tabelaClicked(java.awt.event.MouseEvent evt){
+//
+//        }
     }
 }
 
