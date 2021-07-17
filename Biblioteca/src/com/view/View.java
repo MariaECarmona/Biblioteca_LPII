@@ -23,7 +23,7 @@ public class View extends JFrame{
     private JTextField nomeAutorTxtField;
     private JTextField localNascAutorTxtField;
     private JTextField nomeEditoraTxtField;
-
+    private JTextField nomeGeneroTxtField;
 
     private JFormattedTextField isbnFmtTxtField;
     private JFormattedTextField numPgFmtTxtField;
@@ -38,10 +38,14 @@ public class View extends JFrame{
     private JButton btnCriarEditora;
     private JButton btnDeletarEditora;
     private JButton btnEditarEditora;
+    private JButton btnCriarGenero;
+    private JButton btnDeletarGenero;
+    private JButton btnEditarGenero;
 
     private JTable tabelaLivros;
     private JTable tabelaAutores;
     private JTable tabelaEditoras;
+    private JTable tabelaGeneros;
 
 
     public View() throws ParseException {
@@ -127,7 +131,7 @@ public class View extends JFrame{
 
         JPanel painelListaLivros = new JPanel();
         painelListaLivros.setBorder(BorderFactory.createTitledBorder("Lista de Livros"));
-        painelListaLivros.setPreferredSize(new Dimension(500, 300));
+        painelListaLivros.setPreferredSize(new Dimension(500, 200));
 
         String [] colunas = {"", "ISBN", "Título", "Autor", "Editora", "Gênero", "Nº Páginas"};
         Object [][] dados = {
@@ -188,13 +192,13 @@ public class View extends JFrame{
         painelListaAutores.setBorder(BorderFactory.createTitledBorder("Lista de Autores"));
         painelListaAutores.setPreferredSize(new Dimension(500, 300));
 
-        String [] colunasAutores = {"Código", "Nome", "Data de Nascimento", "Local de Nascimento"};
+        String [] colunasAutores = {"", "Código", "Nome", "Data de Nascimento", "Local de Nascimento"};
         Object [][] dadosAutores = {
-                {"Código", "Nome", "Data de Nascimento", "Local de Nascimento"},
-                {"Código", "Nome", "Data de Nascimento", "Local de Nascimento"},
-                {"Código", "Nome", "Data de Nascimento", "Local de Nascimento"},
-                {"Código", "Nome", "Data de Nascimento", "Local de Nascimento"},
-                {"Código", "Nome", "Data de Nascimento", "Local de Nascimento"},
+                {"", "Código", "Nome", "Data de Nascimento", "Local de Nascimento"},
+                {"", "Código", "Nome", "Data de Nascimento", "Local de Nascimento"},
+                {"","Código", "Nome", "Data de Nascimento", "Local de Nascimento"},
+                {"", "Código", "Nome", "Data de Nascimento", "Local de Nascimento"},
+                {"", "Código", "Nome", "Data de Nascimento", "Local de Nascimento"},
         };
 
         tabelaAutores = new JTable(dadosAutores, colunasAutores);
@@ -227,15 +231,15 @@ public class View extends JFrame{
 
         JPanel painelListaEditoras = new JPanel();
         painelListaEditoras.setBorder(BorderFactory.createTitledBorder("Lista de Autores"));
-        painelListaEditoras.setPreferredSize(new Dimension(500, 350));
+        painelListaEditoras.setPreferredSize(new Dimension(500, 330));
 
-        String [] colunasEditoras = {"Código", "Editora"};
+        String [] colunasEditoras = {"", "Código", "Editora"};
         Object [][] dadosEditoras = {
-                {"Código", "Editora"},
-                {"Código", "Editora"},
-                {"Código", "Editora"},
-                {"Código", "Editora"},
-                {"Código", "Editora"},
+                {"", "Código", "Editora"},
+                {"", "Código", "Editora"},
+                {"", "Código", "Editora"},
+                {"", "Código", "Editora"},
+                {"", "Código", "Editora"},
         };
 
         tabelaEditoras = new JTable(dadosEditoras, colunasEditoras);
@@ -246,6 +250,48 @@ public class View extends JFrame{
         painelEditoras.add(painelDadosEditoras);
         painelEditoras.add(painelAcoesEditoras);
         painelEditoras.add(painelListaEditoras);
+
+        //ABA GÊNEROS
+        JPanel painelDadosGeneros = new JPanel();
+        painelDadosGeneros.setBorder(BorderFactory.createTitledBorder("Dados do Gênero"));
+        painelDadosGeneros.setPreferredSize(new Dimension(500, 55));
+
+        painelDadosGeneros.add(new JLabel("Gênero: "));
+        nomeGeneroTxtField = new JTextField();
+        nomeGeneroTxtField.setPreferredSize(new Dimension(430, 24));
+        painelDadosGeneros.add(nomeGeneroTxtField);
+
+        JPanel painelAcoesGeneros = new JPanel();
+        painelAcoesGeneros.setLayout(new GridLayout(1, 3, 50, 0));
+        btnCriarGenero = new JButton("Criar");
+        painelAcoesGeneros.add(btnCriarGenero);
+        btnDeletarGenero = new JButton("Deletar");
+        painelAcoesGeneros.add(btnDeletarGenero);
+        btnEditarGenero = new JButton("Editar");
+        painelAcoesGeneros.add(btnEditarGenero);
+
+        JPanel painelListaGeneros = new JPanel();
+        painelListaGeneros.setBorder(BorderFactory.createTitledBorder("Lista de Gêneros"));
+        painelListaGeneros.setPreferredSize(new Dimension(500, 330));
+
+        String [] colunasGeneros = {"", "Código", "Gênero"};
+        Object [][] dadosGeneros = {
+                {"", "Código", "Editora"},
+                {"", "Código", "Gênero"},
+                {"", "Código", "Gênero"},
+                {"", "Código", "Gênero"},
+                {"", "Código", "Gênero"},
+        };
+
+        tabelaGeneros = new JTable(dadosGeneros, colunasGeneros);
+        JScrollPane scrollPaneGen = new JScrollPane(tabelaGeneros);
+        scrollPaneGen.setPreferredSize(new Dimension(480, 280));
+        painelListaGeneros.add(scrollPaneGen);
+
+        painelGeneros.add(painelDadosGeneros);
+        painelGeneros.add(painelAcoesGeneros);
+        painelGeneros.add(painelListaGeneros);
+
 
 
 
