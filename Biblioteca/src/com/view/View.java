@@ -1,11 +1,17 @@
 package com.view;
 
+import com.dao.LivroDAO;
+import com.table.LivroTableModel;
+
 import javax.swing.*;
 import javax.swing.text.MaskFormatter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.text.ParseException;
+import com.table.*;
+import com.dao.*;
 
 public class View extends JFrame implements ActionListener{
     private JTabbedPane painelAbas;
@@ -15,8 +21,6 @@ public class View extends JFrame implements ActionListener{
     private JPanel painelEditoras;
     private JPanel painelGeneros;
     private JPanel painelBusca;
-    private JPanel painelDadosLivros;
-    private JPanel painelAcoesLivros;
 
     private JTextField tituloTxtField;
     private JTextField autorTxtField;
@@ -27,7 +31,6 @@ public class View extends JFrame implements ActionListener{
     private JTextField nomeEditoraTxtField;
     private JTextField nomeGeneroTxtField;
     private JTextField buscaTxtField;
-
 
     private JFormattedTextField isbnFmtTxtField;
     private JFormattedTextField numPgFmtTxtField;
@@ -76,7 +79,7 @@ public class View extends JFrame implements ActionListener{
         painelAbas.add("Gêneros", painelGeneros);
 
         //ABA LIVROS
-        painelDadosLivros = new JPanel();
+        JPanel painelDadosLivros = new JPanel();
         painelDadosLivros.setBorder(BorderFactory.createTitledBorder("Dados do Livro"));
         painelDadosLivros.setLayout(new GridLayout(5, 1, 2, 2));
         painelDadosLivros.setPreferredSize(new Dimension(500, 180));
@@ -128,7 +131,7 @@ public class View extends JFrame implements ActionListener{
         painelIsbnLivro.add(numPgFmtTxtField);
         painelDadosLivros.add(painelIsbnLivro);
 
-        painelAcoesLivros = new JPanel();
+        JPanel painelAcoesLivros = new JPanel();
         painelAcoesLivros.setLayout(new GridLayout(1, 3, 50, 0));
         btnCriar = new JButton("Criar");
         painelAcoesLivros.add(btnCriar);
@@ -141,17 +144,8 @@ public class View extends JFrame implements ActionListener{
         painelListaLivros.setBorder(BorderFactory.createTitledBorder("Lista de Livros"));
         painelListaLivros.setPreferredSize(new Dimension(500, 200));
 
-        String[] colunas = {"", "ISBN", "Título", "Autor", "Editora", "Gênero", "Nº Páginas"};
-        Object[][] dados = {
-                {"", "ISBN", "Título", "Autor", "Editora", "Gênero", "Nº Páginas"},
-                {"", "ISBN", "Título", "Autor", "Editora", "Gênero", "Nº Páginas"},
-                {"", "ISBN", "Título", "Autor", "Editora", "Gênero", "Nº Páginas"},
-                {"", "ISBN", "Título", "Autor", "Editora", "Gênero", "Nº Páginas"},
-                {"", "ISBN", "Título", "Autor", "Editora", "Gênero", "Nº Páginas"},
-                {"", "ISBN", "Título", "Autor", "Editora", "Gênero", "Nº Páginas"},
-        };
-
-        tabelaLivros = new JTable(dados, colunas);
+        tabelaLivros = new JTable();
+        tabelaLivros.setModel(new LivroTableModel(new LivroDAO().listarTodosFormatado()));
         JScrollPane scrollPane = new JScrollPane(tabelaLivros);
         scrollPane.setPreferredSize(new Dimension(480, 160));
         painelListaLivros.add(scrollPane);
@@ -200,16 +194,8 @@ public class View extends JFrame implements ActionListener{
         painelListaAutores.setBorder(BorderFactory.createTitledBorder("Lista de Autores"));
         painelListaAutores.setPreferredSize(new Dimension(500, 300));
 
-        String[] colunasAutores = {"", "Código", "Nome", "Data de Nascimento", "Local de Nascimento"};
-        Object[][] dadosAutores = {
-                {"", "Código", "Nome", "Data de Nascimento", "Local de Nascimento"},
-                {"", "Código", "Nome", "Data de Nascimento", "Local de Nascimento"},
-                {"", "Código", "Nome", "Data de Nascimento", "Local de Nascimento"},
-                {"", "Código", "Nome", "Data de Nascimento", "Local de Nascimento"},
-                {"", "Código", "Nome", "Data de Nascimento", "Local de Nascimento"},
-        };
-
-        tabelaAutores = new JTable(dadosAutores, colunasAutores);
+        tabelaAutores = new JTable();
+        tabelaAutores.setModel(new AutorTableModel(new AutorDAO().listarTodos()));
         JScrollPane scrollPaneAut = new JScrollPane(tabelaAutores);
         scrollPaneAut.setPreferredSize(new Dimension(480, 250));
         painelListaAutores.add(scrollPaneAut);
@@ -241,16 +227,8 @@ public class View extends JFrame implements ActionListener{
         painelListaEditoras.setBorder(BorderFactory.createTitledBorder("Lista de Autores"));
         painelListaEditoras.setPreferredSize(new Dimension(500, 330));
 
-        String[] colunasEditoras = {"", "Código", "Editora"};
-        Object[][] dadosEditoras = {
-                {"", "Código", "Editora"},
-                {"", "Código", "Editora"},
-                {"", "Código", "Editora"},
-                {"", "Código", "Editora"},
-                {"", "Código", "Editora"},
-        };
-
-        tabelaEditoras = new JTable(dadosEditoras, colunasEditoras);
+        tabelaEditoras = new JTable();
+        tabelaEditoras.setModel(new EditoraTableModel(new EditoraDAO().listarTodos()));
         JScrollPane scrollPaneEdi = new JScrollPane(tabelaEditoras);
         scrollPaneEdi.setPreferredSize(new Dimension(480, 250));
         painelListaEditoras.add(scrollPaneEdi);
@@ -282,16 +260,8 @@ public class View extends JFrame implements ActionListener{
         painelListaGeneros.setBorder(BorderFactory.createTitledBorder("Lista de Gêneros"));
         painelListaGeneros.setPreferredSize(new Dimension(500, 330));
 
-        String[] colunasGeneros = {"", "Código", "Gênero"};
-        Object[][] dadosGeneros = {
-                {"", "Código", "Editora"},
-                {"", "Código", "Gênero"},
-                {"", "Código", "Gênero"},
-                {"", "Código", "Gênero"},
-                {"", "Código", "Gênero"},
-        };
-
-        tabelaGeneros = new JTable(dadosGeneros, colunasGeneros);
+        tabelaGeneros = new JTable();
+        tabelaGeneros.setModel(new GeneroTableModel(new GeneroDAO().listarTodos()));
         JScrollPane scrollPaneGen = new JScrollPane(tabelaGeneros);
         scrollPaneGen.setPreferredSize(new Dimension(480, 280));
         painelListaGeneros.add(scrollPaneGen);
@@ -351,7 +321,9 @@ public class View extends JFrame implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
+        private void tabelaClicked(java.awt.event.MouseEvent evt){
 
+        }
     }
 }
 
