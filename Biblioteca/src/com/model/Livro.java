@@ -1,8 +1,9 @@
 package com.model;
 
 public class Livro {
-    private String isbn, nome;
-    private int numPaginas, autor, editora, genero;
+    private String isbn, nome, genero;
+    private int numPaginas, autor, editora;
+    private String nomeAutor = null, nomeEditora = null;
 
     public String getIsbn() {
         return isbn;
@@ -44,12 +45,27 @@ public class Livro {
         this.editora = editora;
     }
 
-    public int getGenero() {
+    public String getGenero() {
         return genero;
     }
 
-    public void setGenero(int genero) {
+    public void setGenero(String genero) {
         this.genero = genero;
     }
 
+    public String getNomeAutor() {
+        return nomeAutor;
+    }
+
+    public void setNomeAutor(String nomeAutor) {
+        this.nomeAutor = nomeAutor;
+    }
+
+    public String getNomeEditora() {
+        return nomeEditora;
+    }
+
+    public void setNomeEditora(String nomeEditora) {
+        this.nomeEditora = nomeEditora;
+    }
 }
