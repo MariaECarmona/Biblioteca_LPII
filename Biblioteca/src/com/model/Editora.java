@@ -4,6 +4,13 @@ public class Editora {
     private String nome;
     private int codigo;
 
+    public Editora(){
+    }
+
+    public Editora(String nome){
+        this.nome = nome;
+    }
+
     public String getNome() {
         return nome;
     }

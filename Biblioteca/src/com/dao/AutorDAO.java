@@ -1,6 +1,8 @@
 package com.dao;
 
 import com.model.Autor;
+
+import javax.swing.*;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -31,12 +33,13 @@ public class AutorDAO {
             stmt.execute();
             stmt.close();
         }catch(Exception erro){
+            JOptionPane.showMessageDialog(null, "Falha ao criar autor.");
             throw new RuntimeException("Erro ao inserir Autor: " + erro);
         }
     }
 
     public void alterar(Autor autor){
-        String sql = "UPDATE autor SET Nome = ?, DtNasc = ?, LocalNasc = ? WHERE Codigo = ?";
+        String sql = "UPDATE `autor` SET `Nome` = ?, `DtNasc` = ?, `LocalNasc` = ? WHERE `Codigo` = ?";
 
         try{
             stmt = conn.prepareStatement(sql);
@@ -48,6 +51,7 @@ public class AutorDAO {
             stmt.execute();
             stmt.close();
         }catch(Exception erro){
+            JOptionPane.showMessageDialog(null, "Falha ao editar autor.");
             throw new RuntimeException("Erro ao alterar Autor: " + erro);
         }
     }
@@ -60,6 +64,7 @@ public class AutorDAO {
             st.execute(sql);
             st.close();
         }catch(Exception erro){
+            JOptionPane.showMessageDialog(null, "Falha ao deletar autor.");
             throw new RuntimeException("Erro ao excluir Autor: " + erro);
         }
     }

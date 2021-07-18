@@ -1,6 +1,9 @@
 package com.dao;
 
 import com.model.*;
+import jdk.nashorn.internal.scripts.JO;
+
+import javax.swing.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
@@ -32,7 +35,9 @@ public class LivroDAO {
 
             stmt.execute();
             stmt.close();
+
         }catch(Exception erro){
+            JOptionPane.showMessageDialog(null,"Falha ao criar livro.");
             throw new RuntimeException("Erro ao inserir Livro: " + erro);
         }
     }
@@ -53,18 +58,20 @@ public class LivroDAO {
             stmt.execute();
             stmt.close();
         }catch(Exception erro){
+            JOptionPane.showMessageDialog(null, "Falha ao atualizar dados do Livro.");
             throw new RuntimeException("Erro ao alterar Livro: " + erro);
         }
     }
 
-    public void excluir(int isbn){
-        String sql = "DELETE FROM livro WHERE Isbn = " + isbn;
+    public void excluir(String isbn){
+        String sql = "DELETE FROM `livro` WHERE `Isbn` = " + isbn;
 
         try{
             st = conn.createStatement();
             st.execute(sql);
             st.close();
         }catch(Exception erro){
+            JOptionPane.showMessageDialog(null, "Falha ao deletar livro.");
             throw new RuntimeException("Erro ao excluir Livro: " + erro);
         }
     }
@@ -123,10 +130,10 @@ public class LivroDAO {
                 livro.setNumPaginas(rs.getInt("NumPaginas"));
 
                 livro.setAutor(rs.getInt("Autor"));
-                livro.setNomeAutor(autor.getNome());
+                livro.setNomeAutor();
 
                 livro.setEditora(rs.getInt("Editora"));
-                livro.setNomeEditora(editora.getNome());
+                livro.setNomeEditora();
 
                 livro.setGenero(rs.getString("Genero"));
 

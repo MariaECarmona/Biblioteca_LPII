@@ -1,9 +1,25 @@
 package com.model;
 
+import com.dao.AutorDAO;
+import com.dao.EditoraDAO;
+import com.dao.LivroDAO;
+
 public class Livro {
     private String isbn, nome, genero;
     private int numPaginas, autor, editora;
     private String nomeAutor = null, nomeEditora = null;
+
+    public Livro(){
+    }
+
+    public Livro(String isbn, String nome, String genero, int numPaginas, int autor, int editora){
+        this.isbn = isbn;
+        this.nome = nome;
+        this.genero = genero;
+        this.numPaginas = numPaginas;
+        this.autor = autor;
+        this.editora = editora;
+    }
 
     public String getIsbn() {
         return isbn;
@@ -57,15 +73,17 @@ public class Livro {
         return nomeAutor;
     }
 
-    public void setNomeAutor(String nomeAutor) {
-        this.nomeAutor = nomeAutor;
+    public void setNomeAutor() {
+        Autor autor = new AutorDAO().buscarPorCodigo(this.autor);
+        this.nomeAutor = autor.getNome();
     }
 
     public String getNomeEditora() {
         return nomeEditora;
     }
 
-    public void setNomeEditora(String nomeEditora) {
-        this.nomeEditora = nomeEditora;
+    public void setNomeEditora() {
+        Editora editora = new EditoraDAO().buscarPorCodigo(this.editora);
+        this.nomeEditora = editora.getNome();
     }
 }

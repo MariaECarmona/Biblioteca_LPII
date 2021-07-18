@@ -1,28 +1,34 @@
 package com.view;
 
-import com.dao.LivroDAO;
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.text.MaskFormatter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import com.dao.*;
+import com.model.Autor;
+import com.model.Editora;
+import com.model.Genero;
+import com.model.Livro;
 import com.table.AutorTableModel;
 import com.table.EditoraTableModel;
 import com.table.GeneroTableModel;
 import com.table.LivroTableModel;
 
-public class View extends JFrame{
+public class View extends JFrame {
     private JTabbedPane painelAbas;
 
     private JPanel painelLivros;
     private JPanel painelAutores;
     private JPanel painelEditoras;
     private JPanel painelGeneros;
-//    private JPanel painelBusca;
 
     private JTextField tituloTxtField;
     private JTextField autorTxtField;
@@ -32,10 +38,9 @@ public class View extends JFrame{
     private JTextField localNascAutorTxtField;
     private JTextField nomeEditoraTxtField;
     private JTextField nomeGeneroTxtField;
-    private JTextField buscaTxtField;
+    private JTextField numPgTxtField;
 
     private JFormattedTextField isbnFmtTxtField;
-    private JFormattedTextField numPgFmtTxtField;
     private JFormattedTextField dtNascAutorTxtField;
 
     private JButton btnCriar;
@@ -50,36 +55,33 @@ public class View extends JFrame{
     private JButton btnCriarGenero;
     private JButton btnDeletarGenero;
     private JButton btnEditarGenero;
-    private JButton btnBuscar;
-
-    private ButtonGroup grupoBusca;
-    private JRadioButton rbtnAutor, rbtnGenero, rbtnEditora;
 
     private JTable tabelaLivros;
     private JTable tabelaAutores;
     private JTable tabelaEditoras;
     private JTable tabelaGeneros;
-    private JTable tabelaResultados;
 
-    private Eventos evt;
-    private MouseAdapterTable evtTable;
+    private Genero generoAntigo;
+    private Editora editoraPre;
+
+    private int autorCodigo;
+    private int abaSelecionada;
 
     public View() throws ParseException {
         super("Manipulando o Banco de Dados");
         setLocation(400, 100);
         setSize(520, 500);
         setResizable(false);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        evt = new Eventos();
+        Eventos evt = new Eventos();
 
         painelAbas = new JTabbedPane();
         painelLivros = new JPanel();
         painelAutores = new JPanel();
         painelEditoras = new JPanel();
         painelGeneros = new JPanel();
-//        painelBusca = new JPanel();
 
-//        painelAbas.add("Busca", painelBusca);
         painelAbas.add("Livros", painelLivros);
         painelAbas.add("Autores", painelAutores);
         painelAbas.add("Editoras", painelEditoras);
@@ -132,20 +134,22 @@ public class View extends JFrame{
         painelIsbnLivro.add(isbnFmtTxtField);
 
         painelIsbnLivro.add(new JLabel("Nº Páginas: "));
-        MaskFormatter mascaraNumPg = new MaskFormatter("###");
-        numPgFmtTxtField = new JFormattedTextField(mascaraNumPg);
-        numPgFmtTxtField.setPreferredSize(new Dimension(150, 24));
-        painelIsbnLivro.add(numPgFmtTxtField);
+        numPgTxtField = new JTextField();
+        numPgTxtField.setPreferredSize(new Dimension(150, 24));
+        painelIsbnLivro.add(numPgTxtField);
         painelDadosLivros.add(painelIsbnLivro);
 
         JPanel painelAcoesLivros = new JPanel();
         painelAcoesLivros.setLayout(new GridLayout(1, 3, 50, 0));
         btnCriar = new JButton("Criar");
         painelAcoesLivros.add(btnCriar);
+        btnCriar.addActionListener(evt);
         btnDeletar = new JButton("Deletar");
         painelAcoesLivros.add(btnDeletar);
+        btnDeletar.addActionListener(evt);
         btnEditar = new JButton("Editar");
         painelAcoesLivros.add(btnEditar);
+        btnEditar.addActionListener(evt);
 
         JPanel painelListaLivros = new JPanel();
         painelListaLivros.setBorder(BorderFactory.createTitledBorder("Lista de Livros"));
@@ -153,10 +157,12 @@ public class View extends JFrame{
 
         tabelaLivros = new JTable();
         tabelaLivros.setModel(new LivroTableModel(new LivroDAO().listarTodosFormatado()));
-        tabelaLivros.addMouseListener(evtTable);
         JScrollPane scrollPane = new JScrollPane(tabelaLivros);
         scrollPane.setPreferredSize(new Dimension(480, 160));
         painelListaLivros.add(scrollPane);
+
+        ListSelectionModel modelLivros = tabelaLivros.getSelectionModel();
+        modelLivros.addListSelectionListener(new Eventos());
 
         painelLivros.add(painelDadosLivros);
         painelLivros.add(painelAcoesLivros);
@@ -193,10 +199,13 @@ public class View extends JFrame{
         painelAcoesAutores.setLayout(new GridLayout(1, 3, 50, 0));
         btnCriarAutor = new JButton("Criar");
         painelAcoesAutores.add(btnCriarAutor);
+        btnCriarAutor.addActionListener(evt);
         btnDeletarAutor = new JButton("Deletar");
         painelAcoesAutores.add(btnDeletarAutor);
+        btnDeletarAutor.addActionListener(evt);
         btnEditarAutor = new JButton("Editar");
         painelAcoesAutores.add(btnEditarAutor);
+        btnEditarAutor.addActionListener(evt);
 
         JPanel painelListaAutores = new JPanel();
         painelListaAutores.setBorder(BorderFactory.createTitledBorder("Lista de Autores"));
@@ -207,6 +216,9 @@ public class View extends JFrame{
         JScrollPane scrollPaneAut = new JScrollPane(tabelaAutores);
         scrollPaneAut.setPreferredSize(new Dimension(480, 250));
         painelListaAutores.add(scrollPaneAut);
+
+        ListSelectionModel modelAutores = tabelaAutores.getSelectionModel();
+        modelAutores.addListSelectionListener(new Eventos());
 
         painelAutores.add(painelDadosAutores);
         painelAutores.add(painelAcoesAutores);
@@ -226,10 +238,13 @@ public class View extends JFrame{
         painelAcoesEditoras.setLayout(new GridLayout(1, 3, 50, 0));
         btnCriarEditora = new JButton("Criar");
         painelAcoesEditoras.add(btnCriarEditora);
+        btnCriarEditora.addActionListener(evt);
         btnDeletarEditora = new JButton("Deletar");
         painelAcoesEditoras.add(btnDeletarEditora);
+        btnDeletarEditora.addActionListener(evt);
         btnEditarEditora = new JButton("Editar");
         painelAcoesEditoras.add(btnEditarEditora);
+        btnEditarEditora.addActionListener(evt);
 
         JPanel painelListaEditoras = new JPanel();
         painelListaEditoras.setBorder(BorderFactory.createTitledBorder("Lista de Autores"));
@@ -240,6 +255,9 @@ public class View extends JFrame{
         JScrollPane scrollPaneEdi = new JScrollPane(tabelaEditoras);
         scrollPaneEdi.setPreferredSize(new Dimension(480, 250));
         painelListaEditoras.add(scrollPaneEdi);
+
+        ListSelectionModel modelEditoras = tabelaEditoras.getSelectionModel();
+        modelEditoras.addListSelectionListener(new Eventos());
 
         painelEditoras.add(painelDadosEditoras);
         painelEditoras.add(painelAcoesEditoras);
@@ -259,10 +277,13 @@ public class View extends JFrame{
         painelAcoesGeneros.setLayout(new GridLayout(1, 3, 50, 0));
         btnCriarGenero = new JButton("Criar");
         painelAcoesGeneros.add(btnCriarGenero);
+        btnCriarGenero.addActionListener(evt);
         btnDeletarGenero = new JButton("Deletar");
         painelAcoesGeneros.add(btnDeletarGenero);
+        btnDeletarGenero.addActionListener(evt);
         btnEditarGenero = new JButton("Editar");
         painelAcoesGeneros.add(btnEditarGenero);
+        btnEditarGenero.addActionListener(evt);
 
         JPanel painelListaGeneros = new JPanel();
         painelListaGeneros.setBorder(BorderFactory.createTitledBorder("Lista de Gêneros"));
@@ -274,76 +295,232 @@ public class View extends JFrame{
         scrollPaneGen.setPreferredSize(new Dimension(480, 280));
         painelListaGeneros.add(scrollPaneGen);
 
+        ListSelectionModel modelGeneros = tabelaGeneros.getSelectionModel();
+        modelGeneros.addListSelectionListener(new Eventos());
+
         painelGeneros.add(painelDadosGeneros);
         painelGeneros.add(painelAcoesGeneros);
         painelGeneros.add(painelListaGeneros);
 
-        //ABA BUSCAS
-//        JPanel busca = new JPanel();
-//        buscaTxtField = new JTextField();
-//        buscaTxtField.setPreferredSize(new Dimension(370, 24));
-//        busca.add(buscaTxtField);
-//        btnBuscar = new JButton("Buscar");
-//        busca.add(btnBuscar);
-//
-//        JPanel painelBuscaPor = new JPanel();
-//        painelBuscaPor.setBorder(BorderFactory.createTitledBorder("Buscar livro por"));
-//        painelBuscaPor.setPreferredSize(new Dimension(500, 55));
-//        painelBuscaPor.setLayout(new GridLayout(1, 3, 40, 0));
-//
-//        grupoBusca = new ButtonGroup();
-//        rbtnAutor = new JRadioButton("Autor");
-//        grupoBusca.add(rbtnAutor);
-//        painelBuscaPor.add(rbtnAutor);
-//        rbtnEditora = new JRadioButton("Editora");
-//        grupoBusca.add(rbtnEditora);
-//        painelBuscaPor.add(rbtnEditora);
-//        rbtnGenero = new JRadioButton("Gênero");
-//        grupoBusca.add(rbtnGenero);
-//        painelBuscaPor.add(rbtnGenero);
-//
-//        JPanel painelResultados = new JPanel();
-//        painelResultados.setBorder(BorderFactory.createTitledBorder("Resultados"));
-//        painelResultados.setPreferredSize(new Dimension(500, 330));
-//
-//        String[] colunasResults = {"", "Código", "Nome", "Data de Nascimento", "Local de Nascimento"};
-//        Object[][] dadosResults = {
-//                {"", "Código", "Nome", "Data de Nascimento", "Local de Nascimento"},
-//                {"", "Código", "Nome", "Data de Nascimento", "Local de Nascimento"},
-//                {"", "Código", "Nome", "Data de Nascimento", "Local de Nascimento"},
-//                {"", "Código", "Nome", "Data de Nascimento", "Local de Nascimento"},
-//                {"", "Código", "Nome", "Data de Nascimento", "Local de Nascimento"},
-//        };
-//
-//        tabelaResultados = new JTable(dadosResults, colunasResults);
-//        JScrollPane scrollPaneResults = new JScrollPane(tabelaResultados);
-//        scrollPaneResults.setPreferredSize(new Dimension(480, 280));
-//        painelResultados.add(scrollPaneResults);
-//
-//        painelBusca.add(busca);
-//        painelBusca.add(painelBuscaPor);
-//        painelBusca.add(painelResultados);
+        painelAbas.addChangeListener(e -> {
+            abaSelecionada = painelAbas.getSelectedIndex();
+        });
 
         add(painelAbas);
     }
 
-    private class Eventos  implements ActionListener{
+    private class Eventos implements ActionListener, ListSelectionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            if (evt.getActionCommand() == "Criar") {
+                if (abaSelecionada == 0) {
+                    if(!isbnFmtTxtField.getText().equals("") && !tituloTxtField.getText().equals("") &&
+                            !generoTxtField.getText().equals("") && !numPgTxtField.getText().equals("") &&
+                            !autorTxtField.getText().equals("") && !editoraTxtField.getText().equals("")) {
+
+                        Livro livro = new Livro(isbnFmtTxtField.getText(),
+                                tituloTxtField.getText(),
+                                generoTxtField.getText(),
+                                Integer.parseInt(numPgTxtField.getText()),
+                                Integer.parseInt(autorTxtField.getText()),
+                                Integer.parseInt(editoraTxtField.getText())
+                        );
+
+                        new LivroDAO().inserir(livro);
+                        tabelaLivros.setModel(new LivroTableModel(new LivroDAO().listarTodos()));
+
+                        isbnFmtTxtField.setText("");
+                        tituloTxtField.setText("");
+                        generoTxtField.setText("");
+                        numPgTxtField.setText("");
+                        autorTxtField.setText("");
+                        editoraTxtField.setText("");
+                    }
+
+                } else if (abaSelecionada == 1){
+                    if(!nomeAutorTxtField.getText().equals("") && !localNascAutorTxtField.getText().equals("") && !dtNascAutorTxtField.getText().equals("")) {
+                        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+                        Date date = new Date();
+
+                        try {
+                            date = formatter.parse(dtNascAutorTxtField.getText());
+
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
+                        Autor autor = new Autor(nomeAutorTxtField.getText(),
+                                localNascAutorTxtField.getText(),
+                                new java.sql.Date(date.getTime())
+                        );
+
+                        new AutorDAO().inserir(autor);
+                        tabelaAutores.setModel(new AutorTableModel(new AutorDAO().listarTodos()));
+
+                        nomeAutorTxtField.setText("");
+                        localNascAutorTxtField.setText("");
+                        dtNascAutorTxtField.setText("");
+                    }
+
+                } else if (abaSelecionada == 2) {
+                    if(!nomeEditoraTxtField.getText().equals("")) {
+                        Editora editora = new Editora(nomeEditoraTxtField.getText());
+
+                        new EditoraDAO().inserir(editora);
+                        tabelaEditoras.setModel(new EditoraTableModel(new EditoraDAO().listarTodos()));
+
+                        nomeEditoraTxtField.setText("");
+                    }
+
+                } else if (abaSelecionada == 3){
+                    if(!nomeGeneroTxtField.getText().equals("")) {
+                        Genero genero = new Genero(nomeGeneroTxtField.getText());
+
+                        new GeneroDAO().inserir(genero);
+                        tabelaGeneros.setModel(new GeneroTableModel(new GeneroDAO().listarTodos()));
+
+                        nomeGeneroTxtField.setText("");
+                    }
+                }
+
+            } else if (evt.getActionCommand() == "Editar"){
+                if (abaSelecionada == 0){
+                    Livro livro = new Livro(isbnFmtTxtField.getText(),
+                                                tituloTxtField.getText(),
+                                                generoTxtField.getText(),
+                                                Integer.parseInt(numPgTxtField.getText()),
+                                                Integer.parseInt(autorTxtField.getText()),
+                                                Integer.parseInt(editoraTxtField.getText())
+                        );
+
+                        new LivroDAO().alterar(livro);
+                        tabelaLivros.setModel(new LivroTableModel(new LivroDAO().listarTodos()));
+
+                }else if(abaSelecionada == 1){
+                    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+                    Date date = new Date();
+
+                    try {
+                        date = formatter.parse(dtNascAutorTxtField.getText());
+
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+                    Autor autor = new Autor(nomeAutorTxtField.getText(),
+                            localNascAutorTxtField.getText(),
+                            new java.sql.Date(date.getTime())
+                    );
+
+                    autor.setCodigo(autorCodigo);
+                    new AutorDAO().alterar(autor);
+                    tabelaAutores.setModel(new AutorTableModel(new AutorDAO().listarTodos()));
+
+                }else if (abaSelecionada == 2){
+                    Editora editora = new Editora(nomeEditoraTxtField.getText());
+
+                    editora.setCodigo(editoraPre.getCodigo());
+
+                    new EditoraDAO().alterar(editora);
+                    tabelaEditoras.setModel(new EditoraTableModel(new EditoraDAO().listarTodos()));
+
+                }else if (abaSelecionada == 3){
+                    Genero genero = new Genero(nomeGeneroTxtField.getText());
+
+                    new GeneroDAO().alterar(generoAntigo, genero);
+                    tabelaGeneros.setModel(new GeneroTableModel(new GeneroDAO().listarTodos()));
+
+                }
+            } else if (evt.getActionCommand() == "Deletar"){
+                if (abaSelecionada == 0){
+                    new LivroDAO().excluir(isbnFmtTxtField.getText());
+
+                    tabelaLivros.setModel(new LivroTableModel(new LivroDAO().listarTodos()));
+
+                    isbnFmtTxtField.setText("");
+                    tituloTxtField.setText("");
+                    generoTxtField.setText("");
+                    numPgTxtField.setText("");
+                    autorTxtField.setText("");
+                    editoraTxtField.setText("");
+
+                } else if(abaSelecionada == 1){
+                    new AutorDAO().excluir(autorCodigo);
+                    tabelaAutores.setModel(new AutorTableModel(new AutorDAO().listarTodos()));
+
+                    nomeAutorTxtField.setText("");
+                    dtNascAutorTxtField.setText("");
+                    localNascAutorTxtField.setText("");
+
+                }else if (abaSelecionada == 2){
+                    new EditoraDAO().excluir(editoraPre.getCodigo());
+                    tabelaEditoras.setModel(new EditoraTableModel(new EditoraDAO().listarTodos()));
+
+                    nomeEditoraTxtField.setText("");
+
+                } else if (abaSelecionada == 3){
+                    new GeneroDAO().excluir(nomeGeneroTxtField.getText());
+                    tabelaGeneros.setModel(new GeneroTableModel(new GeneroDAO().listarTodos()));
+
+                    nomeGeneroTxtField.setText("");
+                }
+            }
+        }
 
 
         @Override
-        public void actionPerformed(ActionEvent actionEvent) {
+        public void valueChanged(ListSelectionEvent e) {
+            ListSelectionModel model = (ListSelectionModel) e.getSource();
+            int painelSelecionado = painelAbas.getSelectedIndex();
 
+            if (!model.isSelectionEmpty()) {
+                int selected = model.getMinSelectionIndex();
+
+                switch (painelSelecionado) {
+                    case 0:
+                        ArrayList<Livro> livros = new ArrayList(new LivroDAO().listarTodos());
+                        Livro livro = livros.get(selected);
+
+                        tituloTxtField.setText(livro.getNome());
+                        autorTxtField.setText(Integer.toString(livro.getAutor()));
+                        editoraTxtField.setText(Integer.toString(livro.getEditora()));
+                        generoTxtField.setText(livro.getGenero());
+                        numPgTxtField.setText(Integer.toString(livro.getNumPaginas()));
+                        isbnFmtTxtField.setText(livro.getIsbn());
+                        break;
+
+                    case 1:
+                        ArrayList<Autor> autores = new ArrayList(new AutorDAO().listarTodos());
+                        Autor autor = autores.get(selected);
+
+                        Date date = autor.getDtNasc();
+                        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+
+                        nomeAutorTxtField.setText(autor.getNome());
+                        dtNascAutorTxtField.setText(dateFormat.format(date));
+                        localNascAutorTxtField.setText(autor.getLocalNasc());
+                        autorCodigo = autor.getCodigo();
+                        break;
+
+                    case 2:
+                        ArrayList<Editora> editoras = new ArrayList(new EditoraDAO().listarTodos());
+                        Editora editora = editoras.get(selected);
+
+                        nomeEditoraTxtField.setText(editora.getNome());
+                        editoraPre = editora;
+                        break;
+
+                    case 3:
+                        ArrayList<Genero> generos = new ArrayList(new GeneroDAO().listarTodos());
+                        Genero genero = generos.get(selected);
+
+                        nomeGeneroTxtField.setText(genero.getNome());
+                        generoAntigo = genero;
+                        break;
+                }
+            }
         }
     }
-
-    private class MouseAdapterTable extends MouseAdapter {
-        @Override
-        public void mouseClicked(java.awt.event.MouseEvent evt){
-//            int row = .rowAtPoint(evt.getPoint());
-//            int col = jTable1.columnAtPoint(evt.getPoint());
-
-        }
-    }
-
 }
 

@@ -7,6 +7,15 @@ public class Autor {
     private int codigo;
     private Date dtNasc;
 
+    public Autor(){
+    }
+
+    public Autor(String nome, String localNasc, Date dtNasc){
+        this.nome = nome;
+        this.localNasc = localNasc;
+        this.dtNasc = dtNasc;
+    }
+
     public String getNome() {
         return nome;
     }

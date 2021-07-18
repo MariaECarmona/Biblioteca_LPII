@@ -2,6 +2,8 @@ package com.dao;
 
 import com.model.Editora;
 import com.model.Genero;
+
+import javax.swing.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
@@ -20,40 +22,46 @@ public class GeneroDAO {
     }
 
     public void inserir(Genero genero){
-        String sql = "INSERT into genero VALUE " + genero.getNome();
+        String sql = "INSERT INTO `genero`(`Nome`) VALUES ( ? )";
 
         try{
-            st = conn.createStatement();
-            st.execute(sql);
-            st.close();
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, genero.getNome());
+            stmt.execute();
+            stmt.close();
+
         }catch(Exception erro){
+            JOptionPane.showMessageDialog(null, "Falha ao criar Gênero.");
             throw new RuntimeException("Erro ao inserir Genero: " + erro);
         }
     }
 
     public void alterar(Genero antigo, Genero novo){
-        String sql = "UPDATE genero SET Nome = ? WHERE Nome = ?";
+        String sql = "UPDATE `genero` SET `Nome` = ? WHERE `Nome` = ?";
 
         try{
             stmt = conn.prepareStatement(sql);
-            stmt.setString(1, antigo.getNome());
-            stmt.setString(2, novo.getNome());
+            stmt.setString(1, novo.getNome());
+            stmt.setString(2, antigo.getNome());
 
             stmt.execute();
             stmt.close();
         }catch(Exception erro){
+            JOptionPane.showMessageDialog(null, "Falha ao atualizar dados do Gênero.");
             throw new RuntimeException("Erro ao alterar Genero: " + erro);
         }
     }
 
     public void excluir(String nome){
-        String sql = "DELETE FROM genero WHERE Nome = " + nome;
+        String sql = "DELETE FROM `genero` WHERE `Nome` = ?";
 
         try{
-            st = conn.createStatement();
-            st.execute(sql);
-            st.close();
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, nome);
+            stmt.execute();
+            stmt.close();
         }catch(Exception erro){
+            JOptionPane.showMessageDialog(null, "Falha ao deletar gênero.");
             throw new RuntimeException("Erro ao excluir Genero: " + erro);
         }
     }

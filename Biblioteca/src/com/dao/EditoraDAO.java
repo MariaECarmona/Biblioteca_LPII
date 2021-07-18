@@ -2,6 +2,8 @@ package com.dao;
 
 import com.model.Autor;
 import com.model.Editora;
+
+import javax.swing.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
@@ -29,12 +31,13 @@ public class EditoraDAO {
             stmt.execute();
             stmt.close();
         }catch(Exception erro){
+            JOptionPane.showMessageDialog(null, "Falha ao criar Editora.");
             throw new RuntimeException("Erro ao inserir Editora: " + erro);
         }
     }
 
     public void alterar(Editora editora){
-        String sql = "UPDATE editora SET Nome = ? WHERE Codigo = ?";
+        String sql = "UPDATE `editora` SET `Nome` = ? WHERE `Codigo` = ?";
 
         try{
             stmt = conn.prepareStatement(sql);
@@ -44,6 +47,7 @@ public class EditoraDAO {
             stmt.execute();
             stmt.close();
         }catch(Exception erro){
+            JOptionPane.showMessageDialog(null, "Falha ao atualizar dados da Editora.");
             throw new RuntimeException("Erro ao alterar Editora: " + erro);
         }
     }
@@ -56,6 +60,7 @@ public class EditoraDAO {
             st.execute(sql);
             st.close();
         }catch(Exception erro){
+            JOptionPane.showMessageDialog(null, "Falha ao deletar Editora.");
             throw new RuntimeException("Erro ao excluir Editora: " + erro);
         }
     }

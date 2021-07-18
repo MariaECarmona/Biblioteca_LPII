@@ -67,7 +67,8 @@ CREATE TABLE `livro` (
   `NumPaginas` int(11) NOT NULL,
   `Autor` int(11) NOT NULL,
   `Editora` int(11) NOT NULL,
-  `Genero` varchar(255) NOT NULL
+  `Genero` varchar(255) NOT NULL,
+  PRIMARY KEY(`Isbn`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
